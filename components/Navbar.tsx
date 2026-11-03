@@ -7,6 +7,7 @@ const menu = [
   { href: "/", teks: "Beranda" },
   { href: "/event", teks: "Event" },
   { href: "/tentang", teks: "Tentang" },
+  { href: "/favorit", teks: "Favorit" },
   { href: "/kontak", teks: "kontak" },
 ];
 
