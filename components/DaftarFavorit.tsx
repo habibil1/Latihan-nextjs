@@ -26,7 +26,7 @@ export default function DaftarFavorit() {
 
   const daftar = semua.filter((e) => ids.includes(e.id));
   if (daftar.length === 0)
-    return <p className="text-slate-500">Belum ada favorit.</p>;
+    return <p className="text-slate-500">Belum ada favorit..</p>;
 
   return (
     <ul className="space-y-2">
