@@ -23,7 +23,14 @@ export default function TombolFavorit({ id }: { id: number }) {
   }
 
   return (
-    <button onClick={ubah} className="mt-3 rounded border px-3 py-1.5 text-sm">
+    <button
+      onClick={ubah}
+      className={`mt-3 rounded border px-3 py-1.5 text-sm font-medium transition-colors ${
+        favorit
+          ? "border-red-400 bg-red-50 text-red-600 hover:bg-red-100"
+          : "border-slate-300 bg-white text-slate-700 hover:border-blue-400 hover:text-blue-600"
+      }`}
+    >
       {favorit ? "♥ Favorit" : "♡ Tambah Favorit"}
     </button>
   );
