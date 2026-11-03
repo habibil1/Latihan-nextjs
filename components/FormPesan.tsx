@@ -45,7 +45,7 @@ export default function FormPesan({ event }: { event: Event }) {
       {berhasil && (
         <p className="text-green-700">
           Terima kasih {nama}! {jumlah} tiket dipesan (belum tersimpan, ini
-          masih latihan).
+          masih latihan.).
         </p>
       )}
       <button className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
