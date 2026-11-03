@@ -7,7 +7,11 @@ export const metadata: Metadata = {
   description: "Katalog dan pemesanan tiket event sekolah",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="id" className="antialiased">
       <body className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
