@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import { useState } from "react";
 import type { Event } from "@/Data/events";
 import KartuEvent from "./KartuEvent";
