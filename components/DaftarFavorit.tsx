@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { rupiah, type Event } from "@/Data/events";
+import { rupiah, type Event } from "@/Data/events"; // Pastikan menggunakan huruf kecil "data"
 
 export default function DaftarFavorit() {
   const [semua, setSemua] = useState<Event[]>([]);
@@ -38,6 +38,8 @@ export default function DaftarFavorit() {
           >
             {e.judul}
           </Link>
+          {" - "}
+          <span className="text-slate-500">{rupiah(e.harga)}</span>
         </li>
       ))}
     </ul>
