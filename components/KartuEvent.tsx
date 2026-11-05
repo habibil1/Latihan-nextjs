@@ -3,11 +3,17 @@ import { rupiah, type Event } from "@/Data/events";
 
 export default function KartuEvent({ event }: { event: Event }) {
   const sisa = event.kuota - event.terisi;
+  const laris = sisa > 0 && event.terisi / event.kuota > 0.5;
   return (
     <div className="rounded-xl border bg-white p-4 shadow-sm">
       <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
         {event.kategori}
       </span>
+      {laris && (
+        <span className="rounded bg-red-100 px-2 py-0.5 text-xs text-red-700">
+          Laris!
+        </span>
+      )}
       <h3 className="mt-2 text-lg font-semibold">{event.judul}</h3>
       <p className="text-sm text-slate-500">
         {event.tanggal} &middot; {event.lokasi}
