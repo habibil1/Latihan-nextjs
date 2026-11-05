@@ -47,8 +47,8 @@ export const events: Event[] = [
     tanggal: "2026-12-03",
     lokasi: "Halaman Depan",
     harga: 0,
-    kuota: 300,
-    terisi: 41,
+    kuota: 40,
+    terisi: 20,
   },
   {
     id: 5,
@@ -72,7 +72,7 @@ export const events: Event[] = [
   },
   {
     id: 7,
-    judul: "Lomba Cerdas Cermat",
+    judul: "Lomba lari",
     kategori: "Lomba",
     tanggal: "2026-12-10",
     lokasi: "Aula",
