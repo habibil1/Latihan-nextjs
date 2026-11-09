@@ -1,14 +1,26 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { pesanan } from "@/Data/pesanan";
 import { rupiah } from "@/Data/events";
+import { batalkanPesanan } from "@/app/actions";
 
-export default function HalamanPesanan() {
+export default async function HalamanPesanan() {
+  const toples = await cookies();
+  const namaPengguna = toples.get("nama")?.value ?? "";
+
   const totalTiket = pesanan.reduce((t, p) => t + p.jumlah, 0);
   const pendapatan = pesanan.reduce((t, p) => t + p.total, 0);
 
   return (
     <div>
       <h1 className="mb-2 text-2xl font-bold">Daftar Pesanan</h1>
+
+      {namaPengguna && (
+        <p className="mb-3 text-sm text-green-700">
+          Halo, {namaPengguna}! Pesananmu ditandai &quot;Kamu&quot;.
+        </p>
+      )}
+
       {pesanan.length === 0 ? (
         <p className="text-slate-500">
           Belum ada pesanan.{" "}
@@ -30,6 +42,7 @@ export default function HalamanPesanan() {
                 <th className="p-2">Pemesan</th>
                 <th className="p-2">Tiket</th>
                 <th className="p-2">Total</th>
+                <th className="p-2"></th>
               </tr>
             </thead>
             <tbody>
@@ -37,9 +50,28 @@ export default function HalamanPesanan() {
                 <tr key={p.nomor} className="border-t">
                   <td className="p-2">{p.nomor}</td>
                   <td className="p-2">{p.judul}</td>
-                  <td className="p-2">{p.nama}</td>
+                  <td className="p-2">
+                    {p.nama}
+                    {namaPengguna &&
+                      p.nama.toLowerCase() === namaPengguna.toLowerCase() && (
+                        <span className="ml-2 rounded bg-green-100 px-1.5 py-0.5 text-xs font-medium text-green-700">
+                          Kamu
+                        </span>
+                      )}
+                  </td>
                   <td className="p-2">{p.jumlah}</td>
                   <td className="p-2">{rupiah(p.total)}</td>
+                  <td className="p-2">
+                    {namaPengguna &&
+                      p.nama.toLowerCase() === namaPengguna.toLowerCase() && (
+                        <form action={batalkanPesanan}>
+                          <input type="hidden" name="nomor" value={p.nomor} />
+                          <button className="text-red-600 underline">
+                            Batalkan
+                          </button>
+                        </form>
+                      )}
+                  </td>
                 </tr>
               ))}
             </tbody>
