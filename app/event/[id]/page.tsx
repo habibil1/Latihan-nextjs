@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 import { events, rupiah } from "@/Data/events";
 import FormPesan from "@/components/FormPesan";
 import TombolFavorit from "@/components/TombolFavorit";
@@ -9,6 +10,8 @@ export default async function Detail({ params }: PageProps<"/event/[id]">) {
   if (!event) notFound();
 
   const sisa = event.kuota - event.terisi;
+  const namaAwal = (await cookies()).get("nama")?.value ?? "";
+
   return (
     <article className="rounded-xl border bg-white p-6">
       <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
@@ -25,7 +28,7 @@ export default async function Detail({ params }: PageProps<"/event/[id]">) {
         Sisa {sisa} dari {event.kuota} tiket
       </p>
       <TombolFavorit id={event.id} />
-      <FormPesan event={event} />
+      <FormPesan event={event} namaAwal={namaAwal} />
     </article>
   );
 }

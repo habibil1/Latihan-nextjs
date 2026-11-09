@@ -2,6 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { events } from "@/Data/events";
 import { tambahPesanan } from "@/Data/pesanan";
+import { cookies } from "next/headers";
 
 export type HasilPesan = {
   berhasil: boolean;
@@ -70,9 +71,13 @@ export async function pesanTiket(
     total: event.harga * jumlah,
     waktu: new Date().toLocaleString("id-ID"),
   });
+  const toples = await cookies();
+  toples.set("nama", nama, { maxAge: 60 * 60 * 24 * 30 });
+
   revalidatePath("/event");
   revalidatePath(`/event/${eventId}`);
   revalidatePath("/pesanan");
+
   return {
     berhasil: true,
     pesan: `Pesanan #${nomor} tersimpan: ${jumlah} tiket untuk ${nama}.`,
