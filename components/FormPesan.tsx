@@ -15,7 +15,7 @@ export default function FormPesan({ event }: { event: Event }) {
   const sisa = event.kuota - event.terisi;
 
   if (sisa === 0) {
-    return <p className="mt-6 font-medium text-red-600">Tiket sudah habis.</p>;
+    return <p className="mt-6 font-medium text-red-600">Tiket sudaha habis.</p>;
   }
 
   return (
