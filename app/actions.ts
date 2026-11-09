@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { events } from "@/Data/events";
 import { tambahPesanan } from "@/Data/pesanan";
 
@@ -40,6 +41,7 @@ export async function pesanTiket(
   } else if (nama.length > 40) {
     galat.nama = "Nama maksimal 40 huruf.  ";
   }
+
   if (!email.includes("@")) galat.email = "Email harus memuat tanda @.";
   if (!Number.isInteger(jumlah) || jumlah < 1) {
     galat.jumlah = "Jumlah tiket minimal 1.";
@@ -68,7 +70,9 @@ export async function pesanTiket(
     total: event.harga * jumlah,
     waktu: new Date().toLocaleString("id-ID"),
   });
-
+  revalidatePath("/event");
+  revalidatePath(`/event/${eventId}`);
+  revalidatePath("/pesanan");
   return {
     berhasil: true,
     pesan: `Pesanan #${nomor} tersimpan: ${jumlah} tiket untuk ${nama}.`,
