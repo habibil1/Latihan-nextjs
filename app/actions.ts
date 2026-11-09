@@ -35,7 +35,11 @@ export async function pesanTiket(
   const sisa = event.kuota - event.terisi;
   const galat: HasilPesan["galat"] = {};
 
-  if (nama.length < 3) galat.nama = "Nama minimal 3 huruf.";
+  if (nama.length < 3) {
+    galat.nama = "Nama minimal 3 huruf.";
+  } else if (nama.length > 40) {
+    galat.nama = "Nama maksimal 40 huruf.  ";
+  }
   if (!email.includes("@")) galat.email = "Email harus memuat tanda @.";
   if (!Number.isInteger(jumlah) || jumlah < 1) {
     galat.jumlah = "Jumlah tiket minimal 1.";
