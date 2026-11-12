@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import localFont from "next/font/local";
 
+const poppins = localFont({
+  src: [
+    { path: "./fonts/Poppins-Regular.ttf", weight: "400" },
+    { path: "./fonts/Poppins-Bold.ttf", weight: "700" },
+  ],
+});
 export const metadata: Metadata = {
   title: "EventKu",
   description: "Katalog dan pemesanan tiket event sekolah",
