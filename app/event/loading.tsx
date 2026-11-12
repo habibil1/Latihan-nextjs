@@ -1,12 +1,13 @@
-export default function MemuatKatalog() {
+export default function MemuatDetail() {
   return (
-    <div>
-      <div className="mb-4 h-8 w-48 animate-pulse rounded bg-slate-200" />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="h-44 animate-pulse rounded-xl bg-slate-200" />
-        ))}
-      </div>
-    </div>
+    <article className="rounded-xl border bg-white p-6">
+      <div className="h-5 w-20 animate-pulse rounded bg-slate-200" />
+
+      <div className="mt-2 h-8 w-3/4 animate-pulse rounded bg-slate-200" />
+
+      <div className="mt-2 h-4 w-1/2 animate-pulse rounded bg-slate-200" />
+
+      <div className="mt-10 h-48 w-full animate-pulse rounded-xl bg-slate-200" />
+    </article>
   );
 }

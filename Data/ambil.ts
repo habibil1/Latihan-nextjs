@@ -6,7 +6,7 @@ function jeda(ms: number) {
 }
 
 export async function ambilEvents() {
-  await jeda(1000);
+  await jeda(1500);
   return events;
 }
 
