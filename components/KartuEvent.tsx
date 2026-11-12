@@ -43,3 +43,4 @@ export default function KartuEvent({ event }: { event: Event }) {
     </div>
   );
 }
+//commit bug
