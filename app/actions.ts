@@ -21,7 +21,6 @@ export async function pesanTiket(
   const jumlah = Number(formData.get("jumlah"));
   const isian = { nama, email };
 
-  // Pura-pura server sedang sibuk, supaya tombol "Memproses..." terlihat
   await new Promise((r) => setTimeout(r, 800));
 
   const event = events.find((e) => e.id === eventId);
@@ -90,7 +89,7 @@ export async function batalkanPesanan(formData: FormData) {
   const nomor = Number(formData.get("nomor"));
   const namaSaya = (await cookies()).get("nama")?.value;
   const i = pesanan.findIndex((p) => p.nomor === nomor);
-  // jangan percaya browser: periksa lagi di server bahwa ini pesanan miliknya
+
   if (i === -1 || pesanan[i].nama !== namaSaya) return;
 
   const [batal] = pesanan.splice(i, 1);

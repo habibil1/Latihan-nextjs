@@ -13,7 +13,6 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
   const [hargaMax, setHargaMax] = useState("");
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setUrut(localStorage.getItem("urut") ?? "tanggal");
   }, []);
 
@@ -56,7 +55,6 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
 
   return (
     <div>
-      {/* Memanggil komponen KontrolKatalog dan mengirimkan props */}
       <KontrolKatalog
         cari={cari}
         setCari={setCari}

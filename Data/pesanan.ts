@@ -9,7 +9,6 @@ export type Pesanan = {
   waktu: string;
 };
 
-// Disimpan di memori server: hilang setiap kali server dimatikan
 export const pesanan: Pesanan[] = [];
 
 let nomorTerakhir = 0;
