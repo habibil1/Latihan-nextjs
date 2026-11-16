@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { rupiah, type Event } from "@/Data/events";
 import KartuEvent from "./KartuEvent";
 import KontrolKatalog from "./KontrolKatalog";
+import type { Saringan } from "@/Data/saring";
 
 export default function KatalogInteraktif({ events }: { events: Event[] }) {
   const [cari, setCari] = useState("");
@@ -53,21 +54,18 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
   const tampil = tersusun.slice(0, batas);
   const sisaLagi = tersusun.length - batas;
 
+  const s: Saringan = {
+    cari,
+    kategori,
+    urut,
+    sisa: adaTiket,
+    max: hargaMax !== "" ? Number(hargaMax) : null,
+    hal: 1,
+  };
+
   return (
     <div>
-      <KontrolKatalog
-        cari={cari}
-        setCari={setCari}
-        kategori={kategori}
-        setKategori={setKategori}
-        urut={urut}
-        setUrut={setUrut}
-        hargaMax={hargaMax}
-        setHargaMax={setHargaMax}
-        adaTiket={adaTiket}
-        setAdaTiket={setAdaTiket}
-        daftarKategori={daftarKategori}
-      />
+      <KontrolKatalog s={s} daftarKategori={daftarKategori} />
 
       <p className="mb-1 text-sm text-slate-500">
         {tersusun.length} event ditemukan

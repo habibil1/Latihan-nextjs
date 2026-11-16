@@ -1,41 +1,24 @@
-type KontrolKatalogProps = {
-  cari: string;
-  setCari: (v: string) => void;
-  kategori: string;
-  setKategori: (v: string) => void;
-  urut: string;
-  setUrut: (v: string) => void;
-  hargaMax: string;
-  setHargaMax: (v: string) => void;
-  adaTiket: boolean;
-  setAdaTiket: (v: boolean) => void;
-  daftarKategori: string[];
-};
+import Form from "next/form";
+import type { Saringan } from "@/Data/saring";
 
 export default function KontrolKatalog({
-  cari,
-  setCari,
-  kategori,
-  setKategori,
-  urut,
-  setUrut,
-  hargaMax,
-  setHargaMax,
-  adaTiket,
-  setAdaTiket,
+  s,
   daftarKategori,
-}: KontrolKatalogProps) {
+}: {
+  s: Saringan;
+  daftarKategori: string[];
+}) {
   return (
-    <div className="mb-4 flex flex-wrap items-center gap-3">
+    <Form action="/event" className="mb-4 flex flex-wrap items-center gap-3">
       <input
-        value={cari}
-        onChange={(e) => setCari(e.target.value)}
+        name="cari"
+        defaultValue={s.cari}
         placeholder="Cari event..."
         className="rounded border bg-white px-3 py-2"
       />
       <select
-        value={kategori}
-        onChange={(e) => setKategori(e.target.value)}
+        name="kategori"
+        defaultValue={s.kategori}
         className="rounded border bg-white px-3 py-2"
       >
         {daftarKategori.map((k) => (
@@ -43,8 +26,8 @@ export default function KontrolKatalog({
         ))}
       </select>
       <select
-        value={urut}
-        onChange={(e) => setUrut(e.target.value)}
+        name="urut"
+        defaultValue={s.urut}
         className="rounded border bg-white px-3 py-2"
       >
         <option value="tanggal">Tanggal terdekat</option>
@@ -52,24 +35,21 @@ export default function KontrolKatalog({
         <option value="mahal">Harga termahal</option>
         <option value="nama">Nama A-Z</option>
       </select>
-
-      <input
-        type="number"
-        value={hargaMax}
-        onChange={(e) => setHargaMax(e.target.value)}
-        placeholder="Harga maksimal"
-        className="w-36 rounded border bg-white px-3 py-2"
-      />
-
-      <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-700">
-        <input
-          type="checkbox"
-          checked={adaTiket}
-          onChange={(e) => setAdaTiket(e.target.checked)}
-          className="h-4 w-4 rounded border-slate-300"
-        />
+      <label className="flex items-center gap-2 text-sm">
+        <input type="checkbox" name="sisa" value="1" defaultChecked={s.sisa} />
         Hanya yang masih ada tiket
       </label>
-    </div>
+      <input
+        type="number"
+        name="max"
+        min={0}
+        defaultValue={s.max ?? ""}
+        placeholder="Harga maksimal"
+        className="w-40 rounded border bg-white px-3 py-2"
+      />
+      <button className="rounded bg-blue-600 px-4 py-2 text-white">
+        Terapkan
+      </button>
+    </Form>
   );
 }
