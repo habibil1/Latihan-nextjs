@@ -50,7 +50,7 @@ export default function KatalogInteraktif({ events }: { events: Event[] }) {
     (total, e) => total + (e.kuota - e.terisi),
     0,
   );
-
+  //commit
   const tampil = tersusun.slice(0, batas);
   const sisaLagi = tersusun.length - batas;
 
