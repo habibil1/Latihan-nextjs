@@ -4,6 +4,7 @@ import { rupiah } from "@/Data/events";
 import { PER_HALAMAN, bacaSaringan, saringEvents } from "@/Data/saring";
 import KontrolKatalog from "@/components/KontrolKatalog";
 import KartuEvent from "@/components/KartuEvent";
+import Halaman from "@/components/Halaman";
 
 export const metadata: Metadata = { title: "Katalog Event" };
 
@@ -45,6 +46,7 @@ export default async function Katalog({ searchParams }: PageProps<"/event">) {
           {terlihat.map((e) => (
             <KartuEvent key={e.id} event={e} />
           ))}
+          <Halaman s={s} hal={hal} jumlah={jumlahHalaman} />
         </div>
       )}
     </div>
