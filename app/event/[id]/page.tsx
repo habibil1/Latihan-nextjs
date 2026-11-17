@@ -1,18 +1,32 @@
 import { Suspense } from "react";
+import Image from "next/image";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { rupiah } from "@/Data/events";
-import { ambilEvent } from "@/Data/ambil";
+import { ambilEvent, hitungPesanan } from "@/Data/ambil";
 import FormPesan from "@/components/FormPesan";
 import TombolFavorit from "@/components/TombolFavorit";
 import EventTerkait from "@/components/EventTerkait";
-import Image from "next/image";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/event/[id]">): Promise<Metadata> {
+  const { id } = await params;
+  const event = await ambilEvent(Number(id));
+  if (!event) return { title: "Event tidak ditemukan" };
+  return {
+    title: event.judul,
+    description: `${event.kategori} di ${event.lokasi}, ${event.tanggal}. ${rupiah(event.harga)}.`,
+  };
+}
 
 export default async function Detail({ params }: PageProps<"/event/[id]">) {
   const { id } = await params;
   const event = await ambilEvent(Number(id));
   if (!event) notFound();
 
+  const jumlahPesanan = await hitungPesanan(event.id);
   const sisa = event.kuota - event.terisi;
   const namaAwal = (await cookies()).get("nama")?.value ?? "";
   return (
@@ -23,7 +37,7 @@ export default async function Detail({ params }: PageProps<"/event/[id]">) {
           alt={event.judul}
           fill
           sizes="(max-width: 1024px) 100vw, 960px"
-          priority
+          preload
           className="rounded-lg object-cover"
         />
       </div>
@@ -32,11 +46,14 @@ export default async function Detail({ params }: PageProps<"/event/[id]">) {
       </span>
       <h1 className="mt-2 text-3xl font-bold">{event.judul}</h1>
       <p className="mt-1 text-slate-500">
-        {event.tanggal} - {event.lokasi}
+        {event.tanggal} · {event.lokasi}
       </p>
       <p className="mt-4 text-xl font-semibold">{rupiah(event.harga)}</p>
       <p className="text-slate-600">
         Sisa {sisa} dari {event.kuota} tiket
+      </p>
+      <p className="text-sm text-slate-500">
+        {jumlahPesanan} pesanan masuk lewat EventKu
       </p>
       <TombolFavorit id={event.id} />
       <FormPesan event={event} namaAwal={namaAwal} />

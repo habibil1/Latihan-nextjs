@@ -1,70 +1,54 @@
-import { Suspense } from "react";
-import Image from "next/image";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { cookies } from "next/headers";
+import { ambilEvents } from "@/Data/ambil";
 import { rupiah } from "@/Data/events";
-import { ambilEvent, hitungPesanan } from "@/Data/ambil";
-import FormPesan from "@/components/FormPesan";
-import TombolFavorit from "@/components/TombolFavorit";
-import EventTerkait from "@/components/EventTerkait";
+import { PER_HALAMAN, bacaSaringan, saringEvents } from "@/Data/saring";
+import KontrolKatalog from "@/components/KontrolKatalog";
+import KartuEvent from "@/components/KartuEvent";
+import Halaman from "@/components/Halaman";
 
-export async function generateMetadata({
-  params,
-}: PageProps<"/event/[id]">): Promise<Metadata> {
-  const { id } = await params;
-  const event = await ambilEvent(Number(id));
-  if (!event) return { title: "Event tidak ditemukan" };
-  return {
-    title: event.judul,
-    description: `${event.kategori} di ${event.lokasi}, ${event.tanggal}. ${rupiah(event.harga)}.`,
-  };
-}
+export const metadata: Metadata = { title: "Katalog Event" };
 
-export default async function Detail({ params }: PageProps<"/event/[id]">) {
-  const { id } = await params;
-  const event = await ambilEvent(Number(id));
-  if (!event) notFound();
+export default async function Katalog({ searchParams }: PageProps<"/event">) {
+  const s = bacaSaringan(await searchParams);
+  const events = await ambilEvents();
+  const tersusun = saringEvents(events, s);
 
-  const jumlahPesanan = await hitungPesanan(event.id);
-  const sisa = event.kuota - event.terisi;
-  const namaAwal = (await cookies()).get("nama")?.value ?? "";
+  const jumlahHalaman = Math.max(1, Math.ceil(tersusun.length / PER_HALAMAN));
+  const hal = Math.min(s.hal, jumlahHalaman);
+  const terlihat = tersusun.slice((hal - 1) * PER_HALAMAN, hal * PER_HALAMAN);
+
+  const daftarKategori = ["Semua", ...new Set(events.map((e) => e.kategori))];
+  const totalSisa = tersusun.reduce((t, e) => t + (e.kuota - e.terisi), 0);
+  const rataHarga =
+    tersusun.length === 0
+      ? 0
+      : Math.round(tersusun.reduce((t, e) => t + e.harga, 0) / tersusun.length);
+
   return (
-    <article className="rounded-xl border bg-white p-6">
-      <div className="relative mb-4 aspect-[40/21] w-full">
-        <Image
-          src={event.gambar ?? "/img/default.png"}
-          alt={event.judul}
-          fill
-          sizes="(max-width: 1024px) 100vw, 960px"
-          preload
-          className="rounded-lg object-cover"
-        />
-      </div>
-      <span className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
-        {event.kategori}
-      </span>
-      <h1 className="mt-2 text-3xl font-bold">{event.judul}</h1>
-      <p className="mt-1 text-slate-500">
-        {event.tanggal} · {event.lokasi}
+    <div>
+      <h1 className="mb-4 text-2xl font-bold">Katalog Event</h1>
+      {/* key: bila URL berubah, formulir dibuat ulang agar isiannya ikut URL */}
+      <KontrolKatalog
+        key={JSON.stringify(s)}
+        s={s}
+        daftarKategori={daftarKategori}
+      />
+      <p className="mb-1 text-sm text-slate-500">
+        {tersusun.length} event ditemukan
       </p>
-      <p className="mt-4 text-xl font-semibold">{rupiah(event.harga)}</p>
-      <p className="text-slate-600">
-        Sisa {sisa} dari {event.kuota} tiket
+      <p className="mb-3 text-sm text-slate-500">
+        Rata-rata harga {rupiah(rataHarga)} · Total sisa tiket {totalSisa}
       </p>
-      <p className="text-sm text-slate-500">
-        {jumlahPesanan} pesanan masuk lewat EventKu
-      </p>
-      <TombolFavorit id={event.id} />
-      <FormPesan event={event} namaAwal={namaAwal} />
-      <section className="mt-6">
-        <h2 className="font-semibold">Event terkait</h2>
-        <Suspense
-          fallback={<p className="text-slate-400">Memuat event terkait...</p>}
-        >
-          <EventTerkait event={event} />
-        </Suspense>
-      </section>
-    </article>
+      {tersusun.length === 0 ? (
+        <p className="text-slate-500">Tidak ada event yang cocok.</p>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {terlihat.map((e) => (
+            <KartuEvent key={e.id} event={e} />
+          ))}
+          <Halaman s={s} hal={hal} jumlah={jumlahHalaman} />
+        </div>
+      )}
+    </div>
   );
 }
