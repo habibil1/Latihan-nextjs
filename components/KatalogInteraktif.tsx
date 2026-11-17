@@ -6,12 +6,12 @@ import KontrolKatalog from "./KontrolKatalog";
 import type { Saringan } from "@/Data/saring";
 
 export default function KatalogInteraktif({ events }: { events: Event[] }) {
-  const [cari, setCari] = useState("");
-  const [kategori, setKategori] = useState("Semua");
+  const [cari] = useState("");
+  const [kategori] = useState("Semua");
   const [urut, setUrut] = useState("tanggal");
   const [batas, setBatas] = useState(4);
-  const [adaTiket, setAdaTiket] = useState(false);
-  const [hargaMax, setHargaMax] = useState("");
+  const [adaTiket] = useState(false);
+  const [hargaMax] = useState("");
 
   useEffect(() => {
     setUrut(localStorage.getItem("urut") ?? "tanggal");
