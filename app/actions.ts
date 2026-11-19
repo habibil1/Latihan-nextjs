@@ -71,15 +71,18 @@ export async function pesanTiket(
     };
   }
 
-  const { error: galatKuota } = await supabaseAdmin
+  const { data: updatedEvent, error: galatKuota } = await supabaseAdmin
     .from("events")
     .update({ terisi: event.terisi + jumlah })
-    .eq("id", eventId);
-  if (galatKuota) {
+    .eq("id", eventId)
+    .eq("terisi", event.terisi)
+    .select();
+
+  if (galatKuota || !updatedEvent || updatedEvent.length === 0) {
+    await supabaseAdmin.from("pesanan").delete().eq("nomor", baru.nomor);
     return {
       berhasil: false,
-      pesan:
-        "Pesanan tersimpan, tetapi kuota gagal diperbarui. Hubungi panitia.",
+      pesan: "Tiket baru saja berubah, coba lagi.",
       galat: {},
       isian,
     };
@@ -105,7 +108,6 @@ export async function batalkanPesanan(formData: FormData) {
   const namaSaya = (await cookies()).get("nama")?.value;
   if (!Number.isInteger(nomor) || !namaSaya) return;
 
-  // syarat kepemilikan ikut dalam perintah hapus: pesanan orang lain tidak akan terhapus
   const { data: batal } = await supabaseAdmin
     .from("pesanan")
     .delete()

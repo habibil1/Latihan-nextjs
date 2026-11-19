@@ -42,6 +42,7 @@ export default async function HalamanPesanan() {
                 <th className="p-2">Pemesan</th>
                 <th className="p-2">Tiket</th>
                 <th className="p-2">Total</th>
+                <th className="p-2">Waktu</th>
                 <th className="p-2"></th>
               </tr>
             </thead>
@@ -62,6 +63,9 @@ export default async function HalamanPesanan() {
                   </td>
                   <td className="p-2">{p.jumlah}</td>
                   <td className="p-2">{rupiah(p.total)}</td>
+                  <td className="p-2">
+                    {new Date(p.dibuat).toLocaleString("id-ID")}
+                  </td>
                   <td className="p-2">
                     {p.nama === namaSaya && (
                       <form action={batalkanPesanan}>
