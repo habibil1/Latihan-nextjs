@@ -26,7 +26,7 @@ export default async function Detail({ params }: PageProps<"/event/[id]">) {
   const event = await ambilEvent(Number(id));
   if (!event) notFound();
 
-  const jumlahPesanan = await hitungPesanan(event.id);
+  const { jumlahPesanan, jumlahTiket } = await hitungPesanan(event.id);
   const sisa = event.kuota - event.terisi;
   const namaAwal = (await cookies()).get("nama")?.value ?? "";
   return (
@@ -53,7 +53,7 @@ export default async function Detail({ params }: PageProps<"/event/[id]">) {
         Sisa {sisa} dari {event.kuota} tiket
       </p>
       <p className="text-sm text-slate-500">
-        {jumlahPesanan} pesanan masuk lewat EventKu
+        {jumlahPesanan} pesanan ({jumlahTiket} tiket) masuk lewat EventKu
       </p>
       <TombolFavorit id={event.id} />
       <FormPesan event={event} namaAwal={namaAwal} />
