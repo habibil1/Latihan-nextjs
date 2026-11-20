@@ -6,11 +6,7 @@ export const metadata: Metadata = {
   title: { default: "Admin", template: "%s · Admin" },
 };
 
-export default async function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   await pastikanAdmin();
   return (
     <div>
