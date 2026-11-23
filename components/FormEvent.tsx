@@ -24,12 +24,13 @@ export default function FormEvent({ event }: { event?: Event }) {
   };
   const [hasil, kirim, sedangKirim] = useActionState(simpanEvent, awal);
   const i = hasil.isian;
-  const kolom = "block w-full rounded border px-3 py-2";
+  const kolom =
+    "block w-full rounded border border-slate-700 bg-slate-800 px-3 py-2 text-white placeholder:text-slate-400";
 
   return (
     <form
       action={kirim}
-      className="max-w-lg space-y-3 rounded-xl border bg-white p-6"
+      className="max-w-lg space-y-3 rounded-xl border bg-blue p-6"
     >
       <input type="hidden" name="id" value={i.id} />
       <div>
